@@ -1,12 +1,11 @@
 var tweetLink = "https://twitter.com/intent/tweet?text="; // link do wysłania tweetów na Twitter - brak mu treści tweeta, który będziemy dodawać na końcu
-var quoteUrl = "https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1"; // link do API Quotes on Design, które pozwala nam na 																	pobieranie losowych cytatów ze swojej bazy- użyjemy go w metodzie która poznamy za chwile.
-
+var quoteUrl = "https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1"; /* link do API Quotes on Design, które pozwala nam na 																	pobieranie losowych cytatów ze swojej bazy- użyjemy go w metodzie która poznamy za chwile.*/
+var prefix = "https://cors-anywhere.herokuapp.com/";
 function getQuote() {
-    $.getJSON(quoteUrl, createTweet);
+    $.getJSON(prefix + quoteUrl, createTweet);
 }
 function createTweet(input) {
     var data = input[0];
-
     var quoteText = $(data.content).text().trim();
     var quoteAuthor = data.title;
 
@@ -20,12 +19,13 @@ function createTweet(input) {
 } else {
     var tweet = tweetLink + encodeURIComponent(tweetText);
     $('.quote').text(quoteText);
+	console.log(tweet);
     $('.author').text("Author: " + quoteAuthor);
     $('.tweet').attr('href', tweet);
 }
 	}
 	$(document).ready(function() {
-    getQuote();
+		getQuote();
     $('.trigger').click(function() {
         getQuote();
     });
